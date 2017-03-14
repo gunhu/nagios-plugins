@@ -103,7 +103,7 @@ pfctl_stats() {
 # Make sure the correct number of command line
 # arguments have been supplied
 
-if [ $# -lt 1 ]; then
+if [ $# -lt 2 ]; then
     print_help
     exit "$STATE_UNKNOWN"
 fi
