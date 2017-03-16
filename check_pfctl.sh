@@ -29,8 +29,8 @@ AUTHOR="2017, Alexis VACHETTE"
 pfctl="/sbin/pfctl"
 
 # List of arrays
-set -A counters "current entries"
-set -A offset 3
+set -A counters "current entries" searches inserts removals
+set -A offset 3 2 2 2
 set -A limits;
 set -A results;
 i="0";
@@ -82,13 +82,13 @@ pfctl_print() {
     local critical=$((${limits[0]}*$MAX_CRITICAL/100))
     local used=$((${results[0]}/100))
 
-    if [ $used -lt $warning ]; then
+    if [ ${results[0]} -lt $warning ]; then
         echo "PF OK - states: ${results[0]} ($used% - limit: ${limits[0]})|states=${results[0]};$warning;$critical;0;${limits[0]}"
         exit "$STATE_OK"
-    elif [ $used -lt $critical ]; then
+    elif [[ ${results[0]} -ge $warning && ${results[0]} -lt $critical ]]; then
         echo "PF WARNING - states: ${results[0]} ($used% - limit: ${limits[0]})|states=${results[0]};$warning;$critical;0;${limits[0]}"
         exit "$STATE_WARNING"
-    elif [ $used -ge $critical ]; then
+    elif [ ${results[0]} -ge $critical ]; then
         echo "PF CRITICAL - states: ${results[0]} ($used% - limit: ${limits[0]})|states=${results[0]};$warning;$critical;0;${limits[0]}"
         exit "$STATE_CRITICAL"
     fi
