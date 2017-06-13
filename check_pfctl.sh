@@ -80,7 +80,7 @@ pfctl_limit() {
 pfctl_print() {
     local warning=$((${limits[0]}*$MAX_WARNING/100))
     local critical=$((${limits[0]}*$MAX_CRITICAL/100))
-    local used=$((${results[0]}/100))
+    local used=$((${results[0]}*100/${limits[0]}))
 
     if [ ${results[0]} -lt $warning ]; then
         echo "PF OK - states: ${results[0]} ($used% - limit: ${limits[0]})|states=${results[0]};$warning;$critical;0;${limits[0]}"
